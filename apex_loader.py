@@ -107,8 +107,11 @@ def write_data_to_influxdb(df, url, token, org, bucket, measurement):
 # --- Main execution ---
 if __name__ == '__main__':
     print("Apex Exporter Service Started...")
-          
-    xml_content = fetch_apex_data(APEX_HOST, current_sdate, DAYS_TO_RETRIEVE)
+    
+    now = datetime.now()
+    start_date = now.strftime("%y%m%d")
+
+    xml_content = fetch_apex_data(APEX_HOST, start_date, DAYS_TO_RETRIEVE)
 
     if xml_content:
         df = parse_xml_to_dataframe(xml_content)
