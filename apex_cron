@@ -1,0 +1,3 @@
+# run at 11:59 pm every day
+# m h dom mon dow command
+59 23 * * * python3 /app/apex_loader.py >> /var/log/cron.log 2>&1
