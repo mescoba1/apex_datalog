@@ -11,8 +11,8 @@ services:
     environment:
       # --- IMPORTANT: Change these values! ---
       DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME: admin
-      DOCKER_INFLUXDB_INIT_PASSWORD: your_admin_password
+      DOCKER_INFLUXDB_INIT_USERNAME: admin # TODO: change
+      DOCKER_INFLUXDB_INIT_PASSWORD: your_admin_password # TODO: change
       DOCKER_INFLUXDB_INIT_ORG: Ugreen_Apex
       DOCKER_INFLUXDB_INIT_BUCKET: apex_datalog
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: your_long_secure_token 
@@ -47,6 +47,9 @@ services:
     image: grafana/grafana:latest
     container_name: apex-grafana
     restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin # TODO: change
+      - GF_SECURITY_ADMIN_PASSWORD=your_admin_password # TODO: change
     volumes:
       - grafana_data:/var/lib/grafana
     ports:
