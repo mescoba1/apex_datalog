@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # 1. The Time-Series Database
+  influxdb:
+    image: influxdb:2.7
+    container_name: apex-influxdb
+    restart: always
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      # --- IMPORTANT: Change these values! ---
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: your_admin_password
+      DOCKER_INFLUXDB_INIT_ORG: Ugreen_Apex
+      DOCKER_INFLUXDB_INIT_BUCKET: apex_datalog
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: your_long_secure_token 
+    ports:
+      - "8086:8086"
+
+  # 2. The Scheduled Data Exporter/Loader
+  exporter:
+    build:
+      context: .
+      dockerfile: Dockerfile.exporter
+    container_name: apex-exporter-cron
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    environment:
+      # Set the container's timezone to ensure the cron job runs at 11:59 PM PT
+      TZ: America/Los_Angeles 
+      
+      # Python Script Configuration (Matches variables in apex_loader.py)
+      APEX_HOST: http://the_sanctuary.local # <--- CHANGE THIS TO YOUR APEX IP
+      START_DATE: "240101" # Fetch 1 day of data by default
+      DAYS_TO_RETRIEVE: 1
+
+      # InfluxDB Connection (Uses same values as the influxdb service above)
+      DOCKER_INFLUXDB_INIT_ORG: Ugreen_Apex
+      DOCKER_INFLUXDB_INIT_BUCKET: apex_datalog
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: your_long_secure_token
+
+  # 3. The Visualization Tool
+  grafana:
+    image: grafana/grafana:latest
+    container_name: apex-grafana
+    restart: unless-stopped
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+
+volumes:
+  influxdb_data:
+  grafana_data:
