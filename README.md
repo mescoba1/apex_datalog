@@ -1,10 +1,20 @@
 # apex_datalog
 Export and Visualize Neptune Apex XML Datalog with Grafana
 
-## Application
-1. Export the Apex datalog once a day at 11:59pm and store data into InfluxDB
-2. Visualize the Apex datalog with Grafana dashboard
-3. Deploy application via Docker container
+## Overview
+This application provides a complete monitoring stack for Neptune Apex Aquarium Controllers. It automates the extraction of historical aquarium data, stores it efficiently, and provides modern visualization tools.
+
+**Key Features:**
+*   **Automated ETL**: A Python script exports the Apex XML datalog daily (default: 11:59 PM) and parses the sensor data.
+*   **Time-Series Storage**: Data is stored in InfluxDB, allowing for long-term retention and efficient querying.
+*   **Visualization**: A pre-configured Grafana dashboard visualizes key metrics like Temperature, pH, ORP, Salinity, and Amp usage.
+*   **Containerized**: The entire stack (Python loader, InfluxDB, Grafana) is deployed via Docker Compose.
+
+## Dependencies
+Before running this application, ensure you have the following:
+*   **Neptune Apex Controller**: Connected to your local network.
+*   **Docker & Docker Compose**: Installed on the host machine (e.g., Raspberry Pi, Linux Server, Desktop).
+*   **Network Access**: The host machine must be able to reach the Apex controller's IP address.
 
 ## Installation
 0. Find Apex IP Address via Ping
