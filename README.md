@@ -53,3 +53,7 @@ http://<MACHINE_IP>:8086/
 ```
 http://<MACHINE_IP>:3000/
 ```
+
+### Grafana Dashboard
+You can find a grafana dashboard template to use in `grafana/dashboard.json` and import to Grafana to get something that should look like this:
+![Dashboard](grafana/dashboard.png)
